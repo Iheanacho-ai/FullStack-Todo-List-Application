@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  todo:
+    build: .
+    image: todo_list
+    ports:
+      - "8000:8000"
+    depends_on:
+      - mongodb
+    networks:
+      - node-network
+    env_file:
+      - .env
+  
+  mongodb:
+    image: mongo
+    container_name: mongodb
+    ports: 
+      - "27017:27017"
+    volumes:
+      - /Users/amarachiiheanacho/Documents/FullStack-Todo-List-Application/mongodbdata:/data/db
+    networks:
+      - node-network
+  
+networks:
+  node-network:
+    driver: bridge
+
+
+  
+
+  
+
