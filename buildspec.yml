@@ -7,7 +7,7 @@ phases:
       # 
       - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 035093205970.dkr.ecr.us-east-1.amazonaws.com
       - REPOSITORY_URI=035093205970.dkr.ecr.us-east-1.amazonaws.com/todo-demo
-      - IMAGE_TAG=build-$(echo $CODEBUILD_BUILD_ID |    awk -F":" '{print $2}')
+      - IMAGE_TAG=build-$(echo $CODEBUILD_BUILD_ID | awk -F":" '{print $2}')
   build:
     commands:
       - echo Build started on `date`
@@ -21,7 +21,7 @@ phases:
       - docker push $REPOSITORY_URI:latest
       - docker push $REPOSITORY_URI:$IMAGE_TAG
       - echo Writing image definitions file...
-      - DOCKER_CONTAINER_NAME=todo-ecr-container
+      - DOCKER_CONTAINER_NAME=todo-demo
       - printf '[{"name":"%s","imageUri":"%s"}]' $DOCKER_CONTAINER_NAME $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
       - echo $DOCKER_CONTAINER_NAME
       - echo prinitng imagedefinitions.json
