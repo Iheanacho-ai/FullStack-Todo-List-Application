@@ -1,0 +1,41 @@
+apiVersion: apps/v1 
+kind: Deployment
+metadata: 
+  name: todo-mongodb
+  labels:
+    app: todo-mongodb
+spec: 
+  replicas: 1
+  selector: 
+    matchLabels: 
+      app: todo-mongodb
+  template:
+    metadata:
+      labels:
+        app: todo-mongodb
+    spec:
+      containers:
+      - name: todo-mongodb
+        image: mongo
+        ports:
+        - containerPort: 27017
+        env:
+        - name: MONGO_INITDB_DATABASE
+          valueFrom: 
+            configMapKeyRef:
+              name: mongodb-configmap
+              key: mongo-initdb-database
+
+--- 
+apiVersion: v1
+kind: Service
+metadata: 
+  name: todo-mongodb-service
+spec:
+  selector: 
+    app: todo-mongodb
+  ports:
+    - protocol: TCP
+      port: 27017
+      targetPort: 27017
+  clusterIP: None

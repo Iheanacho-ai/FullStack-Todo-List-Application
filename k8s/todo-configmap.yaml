@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: todo-configmap
+data:
+  deployment: "local"
+  environment: "development"
+  db: "mongodb://todo-mongodb-service:27017/todo_list"
+  db_name: "todo_list"

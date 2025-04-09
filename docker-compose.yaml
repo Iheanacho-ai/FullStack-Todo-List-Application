@@ -1,0 +1,28 @@
+services:
+  todo:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: todo-application
+    environment: 
+      - DEPLOYMENT=local
+      - ENVIRONMENT=development
+      - DB=mongodb://mongo:27017/todo_list
+      - DB_NAME=todo_list
+    ports: 
+      - "8000:8000"
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo:latest
+    container_name: todo-list-mongo
+    environment:
+      - MONGO_INITDB_DATABASE=todo_list
+    ports: 
+      - "27017:27017"
+    volumes: 
+      - mongodbdata:/data/db
+
+volumes:
+  mongodbdata:
