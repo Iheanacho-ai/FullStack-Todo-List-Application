@@ -25,6 +25,44 @@ spec:
             configMapKeyRef:
               name: mongodb-configmap
               key: mongo-initdb-database
+        volumeMounts:
+        - name: mongodb-volume
+          mountPath: /data/db
+      volumes:
+      - name: mongodb-volume
+        persistentVolumeClaim:
+          claimName: mongodb-volume-claim
+
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mongodb-volume
+  labels:
+    type: local
+spec:
+  storageClassName: ""
+  capacity: 
+    storage: 1Gi
+  accessModes: 
+    - ReadWriteOnce
+  hostPath:
+    path: "/mnt/data"
+
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata: 
+  name: mongodb-volume-claim
+spec:
+  storageClassName: ""
+  accessModes: 
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 50Mi
 
 --- 
 apiVersion: v1
